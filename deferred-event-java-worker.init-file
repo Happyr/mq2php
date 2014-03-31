@@ -27,10 +27,16 @@ USER=java_user
 MESSAGE_QUEUE="rabbitmq"
 EXECUTOR="shell" # could be "shell" or "http"
 
+LOG=/var/log/deferred-event-java-worker.log
+
 #
 # stop changing
 #
 
+#This is the command that will start the application
+COMMAND="java -Dexecutor=$EXECUTOR -DmessageQueue=$MESSAGE_QUEUE -jar $PLUGIN_PATH/$FILE_NAME"
+touch $LOG
+chown $USER $LOG
 
 
 #
@@ -38,39 +44,61 @@ EXECUTOR="shell" # could be "shell" or "http"
 #
 do_start() {
         cd $PLUGIN_PATH
-        su $USER -c "java -Dexecutor=$EXECUTOR -DmessageQueue=$MESSAGE_QUEUE -jar $PLUGIN_PATH/$FILE_NAME > /dev/null &"
+        su $USER -c "$COMMAND >> $LOG 2>&1 &"
+        echo "OK"
 }
 
 #
 # Stop the application
 #
 do_stop() {
-        PID=`ps aux | grep $FILE_NAME | cut -d' ' -f2`
+        do_check
+
+        PID=$?
+        if [ $PID -eq 0 ] ; then
+            echo "Application is already stopped"
+            exit 1
+        fi
+
+        echo -n "Stopping application (pid: $PID): "
         kill -9 $PID
+        echo "OK"
 }
 
 #
 # Check if the application is running
-# Returns 0 if it is running
+# Returns 0 if it is NOT running
 #
 do_check()
 {
-    lines=`ps aux | grep $FILE_NAME | wc -l`
-    if [ $lines -eq 2 ]
-    then
-        return 0
+    # Running ps with some arguments to check if the PID exists
+    # -C : specifies the command name
+    # -o : determines how columns must be displayed
+    # h : hides the data header
+    # sed -n 1p takes first line only
+    PID=`ps -C "$COMMAND" -o pid h | sed -n 1p`
+
+    # If something was returned by the ps command, this function returns the PID
+    if [ $PID ] ; then
+        return $PID
     fi
-    return 1
+
+    # In any another case, return 0
+    return 0
 }
 
 case "$1" in
     start)
         echo "Starting $NAME"
         do_check
-        case "$?" in
-            1) do_start ;;
-            0) echo "$NAME is already running" ;;
-        esac
+
+        PID=$?
+        if [ $PID -ne 0 ] ; then
+            echo "$NAME is already running"
+            exit 1
+        fi
+
+        do_start
         ;;
     stop)
         echo "Stopping $NAME"
@@ -78,18 +106,22 @@ case "$1" in
         ;;
     status)
         do_check
-        case "$?" in
-            1) echo "$NAME is NOT running" ;;
-            0) echo "$NAME is running" ;;
-        esac
+        if [ $? -ne 0 ] ; then
+             echo "$NAME is running"
+        else
+             echo "$NAME is NOT running"
+        fi
         ;;
     restart)
         echo "Restarting $DESC" "$NAME"
         do_check
-        case "$?" in
-            1) echo "$NAME was not running... I'll start it for you" ;;
-            0) do_stop ;;
-        esac
+
+        PID=$?
+        if [ $PID -ne 0 ] ; then
+            do_stop
+        else
+            echo "$NAME was not running... I'll start it for you"
+        fi
         do_start
         ;;
     *)
