@@ -33,7 +33,7 @@ public class HttpExecutor implements ExecutorInterface {
      * @return
      * @throws Exception
      */
-    private String doExecute(Message message) throws IOException{
+    private String doExecute(Message message) throws IOException {
         String url = "http://" + message.getHeader("fastcgi_host") + ":" + message.getHeader("fastcgi_post") + message.getHeader("dispatch_path");
 
         URL obj = new URL(url);

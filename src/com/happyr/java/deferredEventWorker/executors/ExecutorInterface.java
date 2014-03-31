@@ -3,7 +3,6 @@ package com.happyr.java.deferredEventWorker.executors;
 import com.happyr.java.deferredEventWorker.Message;
 
 /**
- *
  * @author Tobias Nyholm
  */
 public interface ExecutorInterface {

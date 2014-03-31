@@ -12,22 +12,17 @@ import com.happyr.java.deferredEventWorker.queue.RabbitMq;
 public class Application {
 
     public static void main(String[] args) {
-
+        int nbThreads = 5;
+        if (args.length > 0) {
+            nbThreads = Integer.parseInt(args[0]);
+        }
         QueueInterface mq = getQueue();
         ExecutorInterface client = getExecutor();
 
-        String error;
-        Message message;
-        while (true) {
-            message = new Message(mq.receive());
-            error = client.execute(message);
-
-            //TODO if there was any error
-            if (error != null) {
-                message.addHeader("error", error);
-                mq.reportError(message.getFormattedMessage());
-            }
+        for (int i = 0; i < nbThreads; i++) {
+            new Worker(mq, client).start();
         }
+
     }
 
     /**
