@@ -41,6 +41,14 @@ Possible values are:
 
 When you are using rabbitmq we will connect to localhost with the official rabbit mq client library.
 
+### Number of worker threads
+
+As default there is 5 threads listening to the queue. These threads are waiting for a response from the PHP script. If
+you are planning to have several long running script simultaneously you may want to increase this. Usually you don't need
+to bother.
+
+```java -jar DeferredEventJavaWorker.jar 5```
+
 ## Message headers
 
 The message should contain some headers to tell the worker what is should do. The message and the header look a lot
