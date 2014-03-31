@@ -6,10 +6,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /**
- * Created by tobias on 30/03/14.
+ * Execute the message payload with the php cli
+ *
+ * @author Tobias Nyholm
  */
 public class ShellExecutor implements ExecutorInterface {
 
+    /**
+     * @param message
+     * @return
+     */
     public String execute(Message message) {
 
         StringBuffer output = new StringBuffer();

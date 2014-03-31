@@ -6,6 +6,9 @@ import com.happyr.java.deferredEventWorker.executors.ShellExecutor;
 import com.happyr.java.deferredEventWorker.queue.QueueInterface;
 import com.happyr.java.deferredEventWorker.queue.RabbitMq;
 
+/**
+ * @author Tobias Nyholm
+ */
 public class Application {
 
     public static void main(String[] args) {

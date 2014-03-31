@@ -1,7 +1,9 @@
 package com.happyr.java.deferredEventWorker.queue;
 
 /**
- * Created by tobias on 30/03/14.
+ * A interface for message queue clients
+ *
+ * @author Tobias Nyholm
  */
 public interface QueueInterface {
     /**

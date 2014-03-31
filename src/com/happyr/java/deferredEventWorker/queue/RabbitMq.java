@@ -8,7 +8,9 @@ import com.rabbitmq.client.QueueingConsumer;
 import java.io.IOException;
 
 /**
- * Created by tobias on 30/03/14.
+ * A Rabbit MQ client
+ *
+ * @author Tobias Nyholm
  */
 public class RabbitMq implements QueueInterface {
 

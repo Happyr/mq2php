@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by tobias on 30/03/14.
+ * This class represent a message on the message queue.
+ *
+ * @author Tobias Nyholm
  */
 public class Message {
 
@@ -26,6 +28,12 @@ public class Message {
         }
     }
 
+    /**
+     * Parse the raw data from the message queue
+     *
+     * @param raw
+     * @throws IOException
+     */
     private void parseRawData(String raw) throws IOException {
 
         BufferedReader reader = new BufferedReader(new StringReader(raw));

@@ -9,6 +9,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Execute the message payload with HTTP
+ *
+ * @author Tobias Nyholm
+ */
 public class HttpExecutor implements ExecutorInterface {
     /**
      * @param message
