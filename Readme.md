@@ -5,7 +5,7 @@ this application is to pull messages from a message queue and initiate php to ex
 
 ## Installation
 
-Download the jar file and put it somewhere like /opt/DeferredEventJavaWorker/deferred-event-java-worker.jar. You might
+Download the jar file and put it somewhere like /opt/DeferredEventJavaWorker/DeferredEventJavaWorker.jar. You might
 want to use a init script. See [this file][initFile] for a template.
 
 You do also need to install a message queue like [Rabbit MQ][http://www.rabbitmq.com/]. When you got everything

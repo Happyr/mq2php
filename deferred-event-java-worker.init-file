@@ -21,7 +21,7 @@ SCRIPT_NAME="/etc/init.d/deferred-event-java-worker"
 #
 
 PLUGIN_PATH=/opt/DeferredEventJavaWorker
-FILE_NAME=deferred-event-java-worker.jar
+FILE_NAME=DeferredEventJavaWorker.jar
 USER=java_user
 
 MESSAGE_QUEUE="rabbitmq"
