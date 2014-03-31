@@ -11,6 +11,9 @@ want to use a init script. See [this file][initFile] for a template.
 You do also need to install a message queue like [Rabbit MQ][http://www.rabbitmq.com/]. When you got everything
 set up for the worker you need to install and configure [FervoDeferredEventBundle][fervoSource]. Use the **amqp backend.**
 
+Remember to protect your queue. If someone unauthorized could write to your queue he will get the same permission to execute
+programs as PHP does. Make sure you restrict access on the queue to localhost or make sure you know what you are doing.
+
 ## Configuration
 
 There is some configuration you might want to consider when starting the worker.
