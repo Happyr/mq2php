@@ -1,6 +1,6 @@
 # Deferred Event Java Worker
 
-This is a worker for [FervoDeferredEventBundle](fervoSoruce). It is written in Java. The purpose of
+This is a worker for [FervoDeferredEventBundle][fervoSource]. It is written in Java. The purpose of
 this application is to pull messages from a message queue and initiate php to execute the job in that message.
 
 
@@ -69,4 +69,4 @@ The port that we should use together with **fastcgi_host**.
 The absolute path to the dispatch.php. This is normally /path/to/symfony/bin/dispatch.php
 
 
-[fervoSource]=https://github.com/fervo/FervoDeferredEventBundle
+[fervoSource]: https://github.com/fervo/FervoDeferredEventBundle
