@@ -38,7 +38,7 @@ EXECUTOR="shell" # could be "shell" or "http"
 #
 do_start() {
         cd $PLUGIN_PATH
-        su $USER -c "java -jar $PLUGIN_PATH/$FILE_NAME > /dev/null &"
+        su $USER -c "java -Dexecutor=$EXECUTOR -DmessageQueue=$MESSAGE_QUEUE -jar $PLUGIN_PATH/$FILE_NAME > /dev/null &"
 }
 
 #

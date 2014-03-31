@@ -3,12 +3,21 @@
 This is a worker for [FervoDeferredEventBundle][fervoSource]. It is written in Java. The purpose of
 this application is to pull messages from a message queue and initiate php to execute the job in that message.
 
+## Installation
+
+Download the jar file and put it somewhere like /opt/DeferredEventJavaWorker/deferred-event-java-worker.jar. You might
+want to use a init script. See [this file][initFile] for a template.
+
+You do also need to install a message queue like [Rabbit MQ][http://www.rabbitmq.com/]. When you got everything
+set up for the worker you need to install and configure [FervoDeferredEventBundle][fervoSource]. Use the **amqp backend.**
 
 ## Configuration
 
 There is some configuration you might want to consider when starting the worker.
 
 ### executor
+
+How do you want to execute the php job? Do you want to do it with PHP-FPM (fastcgi) or PHP cli (shell command).
 
 ```java -Dexecutor=http -jar DeferredEventJavaWorker.jar```
 
@@ -19,11 +28,15 @@ Possible values are:
 
 ### messageQueue
 
+What message queue system do you want to use?
+
 ```java -DmessageQueue=rabbitmq -jar DeferredEventJavaWorker.jar```
 
 Possible values are:
 
  * rabbitmq
+
+When you are using rabbitmq we will connect to localhost with the official rabbit mq client library.
 
 ## Message headers
 
@@ -37,7 +50,7 @@ dispatch_path: /Users/tobias/Workspace/Symfony/app/../bin/dispatch.php
 fastcgi_host: localhost
 fastcgi_port: 9000
 
-TzozOToiU3ltZm9ueVxDb21wb25lbnRcRXZlbnREm9ueVxDb21wb25lbnRcRXZlbnREaXNwYXRjRXZlbnREm9ueVxDb21wb25lbnRcRXZlbnREaXNwYXRjRXZlbnREm9ueVxDb21wb25lbnRcRXZlbnREaXNwYXRjaGVyXEV2ZW50AG5hbWUiO3M6MTA6ImZvby5hY3Rpb24iO30=
+TzozOToiU3ltZm9ueVxDb21wb25lbnRcRXZlbnREm9ueVxDb21wb25lbnRcRXZlbnREaXNwYXRjRXZlbnREm9ueVxDb21wb25lbnRcRXZlbnRE
 ```
 
 ### Shell Executor
@@ -70,3 +83,4 @@ The absolute path to the dispatch.php. This is normally /path/to/symfony/bin/dis
 
 
 [fervoSource]: https://github.com/fervo/FervoDeferredEventBundle
+[initFile]: https://github.com/HappyR/DeferredEventJavaWorker/blob/master/deferred-event-java-worker.init-file
