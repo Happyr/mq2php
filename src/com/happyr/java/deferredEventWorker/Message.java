@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Set;
  */
 public class Message {
 
-    private Hashtable headers;
+    private Map headers;
 
     private String data;
 
@@ -25,7 +26,7 @@ public class Message {
         }
     }
 
-    protected void parseRawData(String raw) throws IOException {
+    private void parseRawData(String raw) throws IOException {
 
         BufferedReader reader = new BufferedReader(new StringReader(raw));
         String line;

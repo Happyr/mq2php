@@ -4,6 +4,7 @@ import com.happyr.java.deferredEventWorker.Message;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,7 +28,7 @@ public class HttpExecutor implements ExecutorInterface {
      * @return
      * @throws Exception
      */
-    private String doExecute(Message message) throws Exception {
+    private String doExecute(Message message) throws IOException{
         String url = "http://" + message.getHeader("fastcgi_host") + ":" + message.getHeader("fastcgi_post") + message.getHeader("path");
 
         URL obj = new URL(url);

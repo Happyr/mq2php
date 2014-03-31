@@ -24,13 +24,13 @@ public class ShellExecutor implements ExecutorInterface {
             //Read std out
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = reader.readLine()) != null) {
-                output.append(line + "\n");
+                output.append(line).append("\n");
             }
 
             //read str err
             reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             while ((line = reader.readLine()) != null) {
-                output.append(line + "\n");
+                output.append(line).append("\n");
             }
 
         } catch (Exception e) {
