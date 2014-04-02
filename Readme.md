@@ -22,11 +22,11 @@ There is some configuration you might want to consider when starting the worker.
 
 How do you want to execute the php job? Do you want to do it with PHP-FPM (fastcgi) or PHP cli (shell command).
 
-```java -Dexecutor=http -jar DeferredEventJavaWorker.jar```
+```java -Dexecutor=fastcgi -jar DeferredEventJavaWorker.jar```
 
 Possible values are:
 
- * http
+ * fastcgi
  * shell
 
 ### messageQueue
@@ -78,7 +78,7 @@ This is the path to the Symfony app/console.
 
 ### PHP-FPM (fastcgi)
 
-These headers must exist when you are using the HTTP executor.
+These headers must exist when you are using the FastCGI executor.
 
 #### fastcgi_host
 

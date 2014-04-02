@@ -6,7 +6,7 @@ import com.happyr.java.deferredEventWorker.queue.QueueInterface;
 /**
  * com.happyr.java.deferredEventWorker
  *
- * @autor Tobias Nyholm
+ * @author Tobias Nyholm
  */
 public class Worker extends Thread {
 

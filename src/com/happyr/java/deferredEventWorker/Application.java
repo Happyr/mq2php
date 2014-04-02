@@ -1,7 +1,7 @@
 package com.happyr.java.deferredEventWorker;
 
 import com.happyr.java.deferredEventWorker.executors.ExecutorInterface;
-import com.happyr.java.deferredEventWorker.executors.HttpExecutor;
+import com.happyr.java.deferredEventWorker.executors.FastCgiExecutor;
 import com.happyr.java.deferredEventWorker.executors.ShellExecutor;
 import com.happyr.java.deferredEventWorker.queue.QueueInterface;
 import com.happyr.java.deferredEventWorker.queue.RabbitMq;
@@ -49,8 +49,8 @@ public class Application {
     private static ExecutorInterface getExecutor() {
         String param = System.getProperty("executor");
         if (param != null) {
-            if (param.equalsIgnoreCase("http")) {
-                return new HttpExecutor();
+            if (param.equalsIgnoreCase("fastcgi")) {
+                return new FastCgiExecutor();
             }
         }
 
