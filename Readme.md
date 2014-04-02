@@ -8,7 +8,7 @@ this application is to pull messages from a message queue and initiate php to ex
 Download the jar file and put it somewhere like /opt/DeferredEventJavaWorker/DeferredEventJavaWorker.jar. You might
 want to use a init script. See [this file][initFile] for a template.
 
-You do also need to install a message queue like [Rabbit MQ][http://www.rabbitmq.com/]. When you got everything
+You do also need to install a message queue like [Rabbit MQ](http://www.rabbitmq.com/). When you got everything
 set up for the worker you need to install and configure [FervoDeferredEventBundle][fervoSource]. Use the **amqp backend.**
 
 Remember to protect your queue. If someone unauthorized could write to your queue he will get the same permission to execute
