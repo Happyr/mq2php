@@ -28,7 +28,7 @@ public class FastCgiExecutor implements ExecutorInterface {
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
 
-            return "Unknown java error: " + sw.toString().replaceAll("\n", "").replaceAll("\r", "");
+            return "Unknown java error: " + sw.toString().replaceAll("[\n\f\r]", "");
         }
     }
 
