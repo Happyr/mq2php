@@ -28,7 +28,7 @@ public class FastCgiExecutor implements ExecutorInterface {
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
 
-            return "Unknown java error: " + sw.toString().replaceAll("[\n\f\r]", "");
+            return "Unknown java error: " + sw.toString();
         }
     }
 
@@ -70,7 +70,9 @@ public class FastCgiExecutor implements ExecutorInterface {
         //close the connection
         connection.close();
 
-        //TODO if error?
-        return response;
+        if (connection.hasOutputOnStdErr())
+            return response;
+
+        return null;
     }
 }

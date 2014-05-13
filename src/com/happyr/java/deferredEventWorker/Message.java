@@ -84,6 +84,6 @@ public class Message {
     }
 
     public void addHeader(String key, String value) {
-        headers.put(key, value);
+        headers.put(key, value.replaceAll(":", "=").replaceAll("[\r\n]", " #> "));
     }
 }

@@ -29,6 +29,7 @@ public class Worker extends Thread {
 
             //if there was any error
             if (error != null) {
+                System.err.println(error);
                 message.addHeader("error", error);
                 mq.reportError(message.getFormattedMessage());
             }
