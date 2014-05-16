@@ -3,6 +3,8 @@
 This is a worker for [FervoDeferredEventBundle][fervoSource]. It is written in Java. The purpose of
 this application is to pull messages from a message queue and initiate php to execute the job in that message.
 
+You will information about how this worker should work on the [Happr Developer blog](http://developer.happyr.com/real-asynchronous-events-with-symfony2)
+
 ## Installation
 
 Download the jar file and put it somewhere like /opt/DeferredEventJavaWorker/DeferredEventJavaWorker.jar. You might
