@@ -56,7 +56,7 @@ to bother.
 The message should contain some headers to tell the worker what is should do. The message and the header look a lot
 like the HTTP protocol. This is an example message:
 
-```batch
+```bash
 php_bin: /usr/local/bin/php
 console_path: /Users/tobias/Workspace/Symfony/app/console
 dispatch_path: /Users/tobias/Workspace/Symfony/app/../bin/dispatch.php
