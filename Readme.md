@@ -24,7 +24,9 @@ There is some configuration you might want to consider when starting the worker.
 
 How do you want to execute the php job? Do you want to do it with PHP-FPM (fastcgi) or PHP cli (shell command).
 
-```java -Dexecutor=fastcgi -jar DeferredEventJavaWorker.jar```
+```bash 
+java -Dexecutor=fastcgi -jar DeferredEventJavaWorker.jar
+```
 
 Possible values are:
 
@@ -35,7 +37,9 @@ Possible values are:
 
 What message queue system do you want to use?
 
-```java -DmessageQueue=rabbitmq -jar DeferredEventJavaWorker.jar```
+```bash 
+java -DmessageQueue=rabbitmq -jar DeferredEventJavaWorker.jar
+```
 
 Possible values are:
 
@@ -49,7 +53,9 @@ As default there is 5 threads listening to the queue. These threads are waiting 
 you are planning to have several long running script simultaneously you may want to increase this. Usually you don't need
 to bother.
 
-```java -jar DeferredEventJavaWorker.jar 5```
+```bash 
+java -jar DeferredEventJavaWorker.jar 5
+```
 
 ## Message headers
 
