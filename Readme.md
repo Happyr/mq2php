@@ -98,7 +98,7 @@ The port that we should use together with **fastcgi_host**.
 
 #### dispatch_path
 
-The absolute path to the dispatch.php. This is normally /path/to/symfony/bin/dispatch.php
+The absolute path to the dispatch.php. This is normally /path/to/symfony/bin/dispatch.php. The path should not contain "/../" or be a symbolic link. 
 
 
 [fervoSource]: https://github.com/fervo/FervoDeferredEventBundle
