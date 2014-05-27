@@ -3,6 +3,8 @@
 This is a worker for [FervoDeferredEventBundle][fervoSource]. It is written in Java. The purpose of
 this application is to pull messages from a message queue and initiate php to execute the job in that message.
 
+You will information about how this worker should work on the [Happr Developer blog](http://developer.happyr.com/real-asynchronous-events-with-symfony2)
+
 ## Installation
 
 Download the jar file and put it somewhere like /opt/DeferredEventJavaWorker/DeferredEventJavaWorker.jar. You might
@@ -22,7 +24,9 @@ There is some configuration you might want to consider when starting the worker.
 
 How do you want to execute the php job? Do you want to do it with PHP-FPM (fastcgi) or PHP cli (shell command).
 
-```java -Dexecutor=fastcgi -jar DeferredEventJavaWorker.jar```
+```bash 
+java -Dexecutor=fastcgi -jar DeferredEventJavaWorker.jar
+```
 
 Possible values are:
 
@@ -33,7 +37,9 @@ Possible values are:
 
 What message queue system do you want to use?
 
-```java -DmessageQueue=rabbitmq -jar DeferredEventJavaWorker.jar```
+```bash 
+java -DmessageQueue=rabbitmq -jar DeferredEventJavaWorker.jar
+```
 
 Possible values are:
 
@@ -47,14 +53,16 @@ As default there is 5 threads listening to the queue. These threads are waiting 
 you are planning to have several long running script simultaneously you may want to increase this. Usually you don't need
 to bother.
 
-```java -jar DeferredEventJavaWorker.jar 5```
+```bash 
+java -jar DeferredEventJavaWorker.jar 5
+```
 
 ## Message headers
 
 The message should contain some headers to tell the worker what is should do. The message and the header look a lot
 like the HTTP protocol. This is an example message:
 
-```batch
+```bash
 php_bin: /usr/local/bin/php
 console_path: /Users/tobias/Workspace/Symfony/app/console
 dispatch_path: /Users/tobias/Workspace/Symfony/app/../bin/dispatch.php
@@ -90,7 +98,7 @@ The port that we should use together with **fastcgi_host**.
 
 #### dispatch_path
 
-The absolute path to the dispatch.php. This is normally /path/to/symfony/bin/dispatch.php
+The absolute path to the dispatch.php. This is normally /path/to/symfony/bin/dispatch.php. The path should not contain "/../" or be a symbolic link. 
 
 
 [fervoSource]: https://github.com/fervo/FervoDeferredEventBundle
