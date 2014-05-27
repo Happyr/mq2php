@@ -1,6 +1,7 @@
 package com.happyr.java.deferredEventWorker.executors;
 
 import com.happyr.java.deferredEventWorker.Message;
+import com.happyr.java.deferredEventWorker.PathResolver;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,7 +21,7 @@ public class ShellExecutor implements ExecutorInterface {
 
         StringBuffer output = new StringBuffer();
 
-        String command = message.getHeader("php_bin") + " " + message.getHeader("console_path") + " fervo:deferred-event:dispatch " + message.getData();
+        String command = message.getHeader("php_bin") + " " + PathResolver.resolve(message.getHeader("console_path")) + " fervo:deferred-event:dispatch " + message.getData();
         Process p;
         try {
             p = Runtime.getRuntime().exec(command);

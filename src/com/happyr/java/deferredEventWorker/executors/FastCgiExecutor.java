@@ -2,6 +2,7 @@ package com.happyr.java.deferredEventWorker.executors;
 
 import com.googlecode.fcgi4j.FCGIConnection;
 import com.happyr.java.deferredEventWorker.Message;
+import com.happyr.java.deferredEventWorker.PathResolver;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,7 +44,7 @@ public class FastCgiExecutor implements ExecutorInterface {
         FCGIConnection connection = FCGIConnection.open();
         connection.connect(new InetSocketAddress(message.getHeader("fastcgi_host"), Integer.parseInt(message.getHeader("fastcgi_port"))));
 
-        connection.beginRequest(message.getHeader("dispatch_path"));
+        connection.beginRequest(PathResolver.resolve(message.getHeader("dispatch_path")));
         connection.setRequestMethod("POST");
 
         byte[] postData = ("DEFERRED_DATA=" + message.getData()).getBytes();
