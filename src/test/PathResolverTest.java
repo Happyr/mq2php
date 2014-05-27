@@ -1,6 +1,7 @@
+package test;
+
 import com.happyr.java.deferredEventWorker.PathResolver;
 import junit.framework.TestCase;
-import org.junit.Test;
 
 /**
  * PACKAGE_NAME
@@ -10,7 +11,6 @@ import org.junit.Test;
 
 public class PathResolverTest extends TestCase {
 
-    @Test
     public void testResolve() {
 
         assertEquals("/home/test/baz", PathResolver.resolve("/home/test/foobar/../baz"));
@@ -22,5 +22,4 @@ public class PathResolverTest extends TestCase {
         assertEquals("/", PathResolver.resolve("/"));
 
     }
-
 }
