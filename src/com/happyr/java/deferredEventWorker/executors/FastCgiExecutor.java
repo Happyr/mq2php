@@ -7,6 +7,7 @@ import com.happyr.java.deferredEventWorker.PathResolver;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
@@ -24,6 +25,10 @@ public class FastCgiExecutor implements ExecutorInterface {
     public String execute(Message message) {
         try {
             return doExecute(message);
+        } catch (ConnectException e) {
+            return "Could not connect to to fastcgi server: " + e.getMessage();
+        } catch (IOException e) {
+            return "IO exception: " + e.getMessage();
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
