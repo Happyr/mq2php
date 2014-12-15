@@ -3,6 +3,8 @@ package com.happyr.java.deferredEventWorker;
 import com.happyr.java.deferredEventWorker.executors.ExecutorInterface;
 import com.happyr.java.deferredEventWorker.queue.QueueInterface;
 
+import java.text.SimpleDateFormat;
+
 /**
  * com.happyr.java.deferredEventWorker
  *
@@ -30,8 +32,7 @@ public class Worker extends Thread {
             //if there was any error
             if (error != null) {
                 //add timestamp
-                java.util.Date date = new java.util.Date();
-                error = date.getTime() + ": " + error;
+                error = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + ": " + error;
 
                 System.err.println(error);
                 message.addHeader("error", error);
