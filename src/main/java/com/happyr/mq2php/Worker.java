@@ -1,7 +1,7 @@
-package com.happyr.java.deferredEventWorker;
+package com.happyr.mq2php;
 
-import com.happyr.java.deferredEventWorker.executors.ExecutorInterface;
-import com.happyr.java.deferredEventWorker.queue.QueueInterface;
+import com.happyr.mq2php.executors.ExecutorInterface;
+import com.happyr.mq2php.queue.QueueInterface;
 
 import java.text.SimpleDateFormat;
 

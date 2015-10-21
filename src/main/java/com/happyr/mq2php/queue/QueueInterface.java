@@ -1,4 +1,4 @@
-package com.happyr.java.deferredEventWorker.queue;
+package com.happyr.mq2php.queue;
 
 /**
  * A interface for message queue clients

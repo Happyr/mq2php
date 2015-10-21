@@ -1,4 +1,4 @@
-package com.happyr.java.deferredEventWorker;
+package com.happyr.mq2php;
 
 import java.net.URI;
 import java.net.URISyntaxException;
