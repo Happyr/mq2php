@@ -1,6 +1,6 @@
-package com.happyr.java.deferredEventWorker.executors;
+package com.happyr.mq2php.executors;
 
-import com.happyr.java.deferredEventWorker.Message;
+import com.happyr.mq2php.Message;
 
 /**
  * @author Tobias Nyholm

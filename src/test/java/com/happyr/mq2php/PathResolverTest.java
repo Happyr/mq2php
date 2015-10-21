@@ -1,6 +1,5 @@
-package test;
+package com.happyr.mq2php;
 
-import com.happyr.java.deferredEventWorker.PathResolver;
 import junit.framework.TestCase;
 
 /**

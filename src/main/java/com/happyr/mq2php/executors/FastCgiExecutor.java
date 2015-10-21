@@ -1,8 +1,8 @@
-package com.happyr.java.deferredEventWorker.executors;
+package com.happyr.mq2php.executors;
 
 import com.googlecode.fcgi4j.FCGIConnection;
-import com.happyr.java.deferredEventWorker.Message;
-import com.happyr.java.deferredEventWorker.PathResolver;
+import com.happyr.mq2php.Message;
+import com.happyr.mq2php.PathResolver;
 
 import java.io.IOException;
 import java.io.PrintWriter;
