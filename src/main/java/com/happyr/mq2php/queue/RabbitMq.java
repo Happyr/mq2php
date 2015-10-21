@@ -15,24 +15,23 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitMq implements QueueInterface {
 
-    private final static String QUEUE_NAME = "sf_deferred_events";
-    private final static String ERROR_QUEUE_NAME = "sf_deferred_events_errors";
-
     protected Connection connection;
     protected Channel channel;
     protected QueueingConsumer consumer;
+    protected String errorQueueName;
 
-    public RabbitMq() {
+    public RabbitMq(String topic) {
+        errorQueueName = topic + "_errors";
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try {
             connection = factory.newConnection();
             channel = connection.createChannel();
 
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(topic, false, false, false, null);
 
             consumer = new QueueingConsumer(channel);
-            channel.basicConsume(QUEUE_NAME, true, consumer);
+            channel.basicConsume(topic, true, consumer);
         } catch (TimeoutException e) {
             throw new RuntimeException(e.getMessage());
         } catch (IOException e) {
@@ -64,8 +63,8 @@ public class RabbitMq implements QueueInterface {
     public boolean reportError(String message) {
 
         try {
-            channel.queueDeclare(ERROR_QUEUE_NAME, false, false, false, null);
-            channel.basicPublish("", ERROR_QUEUE_NAME, null, message.getBytes());
+            channel.queueDeclare(errorQueueName, false, false, false, null);
+            channel.basicPublish("", errorQueueName, null, message.getBytes());
         } catch (IOException e) {
             return false;
         }
