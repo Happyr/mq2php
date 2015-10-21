@@ -19,109 +19,76 @@ SCRIPT_NAME="/etc/init.d/deferred-event-java-worker"
 #
 # You may change these values to match your installation
 #
-
-PLUGIN_PATH=/opt/DeferredEventJavaWorker
+JAVA_HOME=/usr/bin/java
+PLUGIN_PATH=/opt
 FILE_NAME=DeferredEventJavaWorker.jar
 USER=java_user
 
 MESSAGE_QUEUE="rabbitmq"
-EXECUTOR="shell" # could be "shell" or "http"
+EXECUTOR="fastcgi" # could be "shell" or "fastcgi"
 
 LOG=/var/log/deferred-event-java-worker.log
-
+PIDFILE=/var/run/deferred-event-java-worker.pid
 #
 # stop changing
 #
 
 #This is the command that will start the application
-COMMAND="java -Dexecutor=$EXECUTOR -DmessageQueue=$MESSAGE_QUEUE -jar $PLUGIN_PATH/$FILE_NAME"
+COMMAND="-Dexecutor=$EXECUTOR -DmessageQueue=$MESSAGE_QUEUE -jar $PLUGIN_PATH/$FILE_NAME"
 touch $LOG
 chown $USER $LOG
 
+
+get_pid() {
+  cat "$PIDFILE"
+}
+
+is_running() {
+  [ -f "$PIDFILE" ] && ps `get_pid` > /dev/null 2>&1
+}
 
 #
 # Start the application
 #
 do_start() {
-        cd $PLUGIN_PATH
-        su $USER -c "$COMMAND >> $LOG 2>&1 &"
-        echo "OK"
+      if is_running; then
+        echo "$NAME is already running"
+      else
+        echo "Starting $NAME"
+        start-stop-daemon -d $PLUGIN_PATH -c $USER --start -mp $PIDFILE -b --exec $JAVA_HOME -- $COMMAND 2>&1 $LOGFILE
+      fi
 }
 
 #
 # Stop the application
 #
 do_stop() {
-        do_check
-
-        PID=$?
-        if [ $PID -eq 0 ] ; then
-            echo "Application is already stopped"
-            exit 1
-        fi
-
-        echo -n "Stopping application (pid: $PID): "
-        kill -9 $PID
-        echo "OK"
-}
-
-#
-# Check if the application is running
-# Returns 0 if it is NOT running
-#
-do_check()
-{
-    # Running ps with some arguments to check if the PID exists
-    # -C : specifies the command name
-    # -o : determines how columns must be displayed
-    # h : hides the data header
-    # sed -n 1p takes first line only
-    PID=`ps -C "$COMMAND" -o pid h | sed -n 1p`
-
-    # If something was returned by the ps command, this function returns the PID
-    if [ $PID ] ; then
-        return $PID
-    fi
-
-    # In any another case, return 0
-    return 0
+  if is_running; then
+    echo "Stopping $NAME"
+    start-stop-daemon --stop -p $PIDFILE --oknodo
+  else
+    echo "$NAME is not running"
+  fi
 }
 
 case "$1" in
     start)
-        echo "Starting $NAME"
-        do_check
-
-        PID=$?
-        if [ $PID -ne 0 ] ; then
-            echo "$NAME is already running"
-            exit 1
-        fi
-
         do_start
         ;;
     stop)
-        echo "Stopping $NAME"
         do_stop
         ;;
     status)
-        do_check
-        if [ $? -ne 0 ] ; then
-             echo "$NAME is running"
+        if is_running; then
+            echo "$NAME is running"
         else
-             echo "$NAME is NOT running"
+            echo "$NAME is stopped"
+            exit 1
         fi
         ;;
     restart)
-        echo "Restarting $DESC" "$NAME"
-        do_check
-
-        PID=$?
-        if [ $PID -ne 0 ] ; then
-            do_stop
-        else
-            echo "$NAME was not running... I'll start it for you"
-        fi
+        do_stop
+        sleep 1
         do_start
         ;;
     *)
