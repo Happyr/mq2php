@@ -11,7 +11,7 @@ public interface QueueInterface {
      *
      * @return String
      */
-    public String receive();
+    String receive();
 
     /**
      * Report an error. Add a message to an error queue/topic
@@ -19,5 +19,5 @@ public interface QueueInterface {
      * @param message
      * @return boolean
      */
-    public boolean reportError(String message);
+    boolean reportError(String message);
 }

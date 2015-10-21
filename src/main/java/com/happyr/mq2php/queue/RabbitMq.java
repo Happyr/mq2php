@@ -6,6 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * A Rabbit MQ client
@@ -32,6 +33,8 @@ public class RabbitMq implements QueueInterface {
 
             consumer = new QueueingConsumer(channel);
             channel.basicConsume(QUEUE_NAME, true, consumer);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e.getMessage());
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -45,7 +48,6 @@ public class RabbitMq implements QueueInterface {
         super.finalize();
     }
 
-    @Override
     public String receive() {
 
         String message;
@@ -59,7 +61,6 @@ public class RabbitMq implements QueueInterface {
         return message;
     }
 
-    @Override
     public boolean reportError(String message) {
 
         try {
