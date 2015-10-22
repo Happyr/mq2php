@@ -16,6 +16,12 @@ if (isset($_SERVER['DEFERRED_DATA'])) {
     }
 }
 
+if ($data === null) {
+    trigger_error('No message data found', E_USER_WARNING);
+    exit(1);
+}
+
+
 $message = base64_decode($data);
 $headers = array();
 $body = null;
