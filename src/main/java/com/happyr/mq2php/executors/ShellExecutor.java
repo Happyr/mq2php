@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 public class ShellExecutor implements ExecutorInterface {
 
     /**
+     *
      * @param message
      * @return
      */
@@ -21,7 +22,10 @@ public class ShellExecutor implements ExecutorInterface {
 
         StringBuffer output = new StringBuffer();
 
-        String command = message.getHeader("php_bin") + " " + PathResolver.resolve(message.getHeader("console_path")) + " fervo:deferred-event:dispatch " + message.getData();
+        String command = message.getHeader("php_bin") + " " +
+                PathResolver.resolve(message.getHeader("dispatch_path")) + " " +
+                message.serialize();
+
         Process p;
         try {
             p = Runtime.getRuntime().exec(command);

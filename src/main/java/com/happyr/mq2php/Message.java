@@ -3,6 +3,7 @@ package com.happyr.mq2php;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Base64;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
@@ -85,5 +86,14 @@ public class Message {
 
     public void addHeader(String key, String value) {
         headers.put(key, value.replaceAll(":", "=").replaceAll("[\r\n]", " #> "));
+    }
+
+    /**
+     * Return a serialized version of this message
+     * @return
+     */
+    public String serialize(){
+        byte[] bytes = this.getFormattedMessage().getBytes();
+        return new String(Base64.getEncoder().encode(bytes));
     }
 }

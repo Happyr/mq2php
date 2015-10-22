@@ -26,7 +26,11 @@ public class Worker extends Thread {
         String error;
         Message message;
         while (true) {
-            message = new Message(mq.receive());
+            message = mq.receive();
+            if (message == null) {
+                continue;
+            }
+
             error = client.execute(message);
 
             //if there was any error

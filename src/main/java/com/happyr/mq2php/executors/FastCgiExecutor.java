@@ -51,7 +51,7 @@ public class FastCgiExecutor implements ExecutorInterface {
         connection.beginRequest(PathResolver.resolve(message.getHeader("dispatch_path")));
         connection.setRequestMethod("POST");
 
-        byte[] postData = ("DEFERRED_DATA=" + message.getData()).getBytes();
+        byte[] postData = ("DEFERRED_DATA=" + message.serialize()).getBytes();
 
         //set contentLength, it's important
         connection.setContentLength(postData.length);

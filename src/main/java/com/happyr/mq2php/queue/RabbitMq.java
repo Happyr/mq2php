@@ -1,5 +1,6 @@
 package com.happyr.mq2php.queue;
 
+import com.happyr.mq2php.Message;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -18,9 +19,11 @@ public class RabbitMq implements QueueInterface {
     protected Connection connection;
     protected Channel channel;
     protected QueueingConsumer consumer;
+    protected String queueName;
     protected String errorQueueName;
 
     public RabbitMq(String topic) {
+        queueName = topic;
         errorQueueName = topic + "_errors";
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
@@ -47,16 +50,16 @@ public class RabbitMq implements QueueInterface {
         super.finalize();
     }
 
-    public String receive() {
-
-        String message;
+    public Message receive() {
+        Message message;
         try {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-            message = new String(delivery.getBody());
+            message = new Message(new String(delivery.getBody()));
         } catch (InterruptedException e) {
-            message = "";
+            return null;
         }
 
+        message.addHeader("queue", queueName);
         return message;
     }
 
