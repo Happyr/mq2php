@@ -32,7 +32,7 @@ foreach ($lines as $i=>$line) {
         break;
     }
     list($name, $value) = explode(':', $line, 2);
-    $headers[$name]= $value;
+    $headers[$name]= trim($value);
 }
 
 //$headers is an array with headers
