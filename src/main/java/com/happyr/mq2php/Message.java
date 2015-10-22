@@ -3,7 +3,7 @@ package com.happyr.mq2php;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Base64;
+import org.apache.commons.codec.binary.Base64;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
@@ -94,6 +94,6 @@ public class Message {
      */
     public String serialize(){
         byte[] bytes = this.getFormattedMessage().getBytes();
-        return new String(Base64.getEncoder().encode(bytes));
+        return new String(Base64.encodeBase64(bytes));
     }
 }
