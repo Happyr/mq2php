@@ -31,7 +31,7 @@ public class RabbitMq implements QueueInterface {
             connection = factory.newConnection();
             channel = connection.createChannel();
 
-            channel.queueDeclare(queueName, false, false, false, null);
+            channel.queueDeclare(queueName, true, false, false, null);
 
             consumer = new QueueingConsumer(channel);
             channel.basicConsume(queueName, true, consumer);
@@ -59,7 +59,7 @@ public class RabbitMq implements QueueInterface {
             return null;
         }
 
-        message.addHeader("queue", queueName);
+        message.addHeader("queue_name", queueName);
         return message;
     }
 

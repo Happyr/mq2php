@@ -57,7 +57,7 @@ public class Application {
      *
      * @return QueueInterface
      */
-    private static QueueInterface getQueue(String queueNames) {
+    private static QueueInterface getQueue(String queueName) {
         String param = System.getProperty("messageQueue");
         if (param == null) {
             //default
@@ -65,7 +65,7 @@ public class Application {
         }
 
         if (param.equalsIgnoreCase("rabbitmq")) {
-            return new RabbitMq(queueNames);
+            return new RabbitMq(queueName);
         }
 
         throw new IllegalArgumentException("Could not find QueueInterface implementation named " + param);
