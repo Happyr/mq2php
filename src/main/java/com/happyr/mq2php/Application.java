@@ -39,15 +39,15 @@ public class Application {
      */
     private static Vector<QueueInterface> getQueues() {
         // This is a comma separated string
-        String topicArg = System.getProperty("topics");
-        if (topicArg == null) {
-            topicArg = "sf_deferred_events";
+        String queueNamesArg = System.getProperty("queueNames");
+        if (queueNamesArg == null) {
+            queueNamesArg = "sf_deferred_events";
         }
-        String[] topics = topicArg.split(",");
+        String[] queueNames = queueNamesArg.split(",");
 
         Vector<QueueInterface> queues = new Vector<QueueInterface>();
-        for (String topic:topics) {
-            queues.add(getQueue(topic));
+        for (String name:queueNames) {
+            queues.add(getQueue(name));
         }
         return queues;
     }
@@ -57,7 +57,7 @@ public class Application {
      *
      * @return QueueInterface
      */
-    private static QueueInterface getQueue(String topic) {
+    private static QueueInterface getQueue(String queueNames) {
         String param = System.getProperty("messageQueue");
         if (param == null) {
             //default
@@ -65,7 +65,7 @@ public class Application {
         }
 
         if (param.equalsIgnoreCase("rabbitmq")) {
-            return new RabbitMq(topic);
+            return new RabbitMq(queueNames);
         }
 
         throw new IllegalArgumentException("Could not find QueueInterface implementation named " + param);

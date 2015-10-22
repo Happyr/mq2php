@@ -9,4 +9,4 @@
 * The data dispatched will be Base64 encoded. Once decoded you will get the complete message with headers
 * New `queue` header will be available on the message once reached the dispatcher.
 * The `QueueInterface::receive` must now return a `Message`.
-* New command line argument `queues` to enable you to listen to more than one queue.
+* New command line argument `queueNames` to enable you to listen to more than one queue.

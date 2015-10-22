@@ -22,19 +22,19 @@ public class RabbitMq implements QueueInterface {
     protected String queueName;
     protected String errorQueueName;
 
-    public RabbitMq(String topic) {
-        queueName = topic;
-        errorQueueName = topic + "_errors";
+    public RabbitMq(String queueName) {
+        this.queueName = queueName;
+        errorQueueName = queueName + "_errors";
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try {
             connection = factory.newConnection();
             channel = connection.createChannel();
 
-            channel.queueDeclare(topic, false, false, false, null);
+            channel.queueDeclare(queueName, false, false, false, null);
 
             consumer = new QueueingConsumer(channel);
-            channel.basicConsume(topic, true, consumer);
+            channel.basicConsume(queueName, true, consumer);
         } catch (TimeoutException e) {
             throw new RuntimeException(e.getMessage());
         } catch (IOException e) {

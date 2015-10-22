@@ -1,7 +1,8 @@
 # Deferred Event Java Worker
 
-This is a worker for [FervoDeferredEventBundle][fervoSource]. It is written in Java. The purpose of
-this application is to pull messages from a message queue and initiate php to execute the job in that message.
+This is a worker for [SimpleBus](https://github.com/SimpleBus) or [FervoDeferredEventBundle][fervoSource]. It is
+written in Java. The purpose of this application is to pull messages from a message queue and initiate php to execute
+the job in that message.
 
 You will information about how this worker should work on the [Happr Developer blog](http://developer.happyr.com/real-asynchronous-events-with-symfony2)
 
@@ -47,6 +48,16 @@ Possible values are:
 
 When you are using rabbitmq we will connect to localhost with the official rabbit mq client library.
 
+### queueNames
+
+You can subscribe to different queues with different names. You should separate names by a comma.
+
+```bash
+java -DmessageQueue=rabbitmq -DqueueNames=foo,bar,baz -jar DeferredEventJavaWorker.jar
+```
+
+These topics will be evenly distributed over the worker threads.
+
 ### Number of worker threads
 
 As default there is 5 threads listening to the queue. These threads are waiting for a response from the PHP script. If
@@ -64,10 +75,10 @@ like the HTTP protocol. This is an example message:
 
 ```bash
 php_bin: /usr/local/bin/php
-console_path: /Users/tobias/Workspace/Symfony/app/console
 dispatch_path: /Users/tobias/Workspace/Symfony/app/../bin/dispatch.php
 fastcgi_host: localhost
 fastcgi_port: 9000
+queue_name: foo
 
 TzozOToiU3ltZm9ueVxDb21wb25lbnRcRXZlbnREm9ueVxDb21wb25lbnRcRXZlbnREaXNwYXRjRXZlbnREm9ueVxDb21wb25lbnRcRXZlbnRE
 ```
@@ -80,9 +91,9 @@ These headers must exist when you are using the Shell executor.
 
 This should be a path to the php executable.
 
-#### console_path
+#### queue_name
 
-This is the path to the Symfony app/console.
+This header is populated once the message has been pulled from the queue. You could use this value in the dispatcher.
 
 ### PHP-FPM (fastcgi)
 
