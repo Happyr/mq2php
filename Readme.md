@@ -112,5 +112,14 @@ The port that we should use together with **fastcgi_host**.
 The absolute path to the dispatch.php. This is normally /path/to/symfony/bin/dispatch.php. The path should not be a symbolic link. 
 
 
+## Contribute
+
+If you want to make changed and compile the application your self you can do so with:
+
+```bash
+mvn clean compile assembly:single
+java -Dexecutor=shell -DqueueNames=asynchronous_commands,asynchronous_events -jar target/mq2php-0.4.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
 [fervoSource]: https://github.com/fervo/FervoDeferredEventBundle
 [initFile]: https://github.com/HappyR/DeferredEventJavaWorker/blob/master/deferred-event-java-worker.init-file
