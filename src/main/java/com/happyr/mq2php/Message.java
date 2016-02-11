@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import org.apache.commons.codec.binary.Base64;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
@@ -94,6 +96,11 @@ public class Message {
      */
     public String serialize(){
         byte[] bytes = this.getFormattedMessage().getBytes();
-        return new String(Base64.encodeBase64(bytes));
+
+        try {
+            return URLEncoder.encode(new String(Base64.encodeBase64(bytes)), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
     }
 }
