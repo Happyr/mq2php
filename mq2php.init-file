@@ -20,8 +20,8 @@ SCRIPT_NAME="/etc/init.d/mq2php"
 # You may change these values to match your installation
 #
 JAVA_HOME=/usr/bin/java
-PLUGIN_PATH=/opt
-FILE_NAME=mq2php-0.3.0.jar
+PLUGIN_PATH=/opt/mq2php
+FILE_NAME=mq2php.jar
 USER=java_user
 
 MESSAGE_QUEUE="rabbitmq"

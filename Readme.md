@@ -1,18 +1,13 @@
-# Deferred Event Java Worker
+# Message queue 2 PHP
 
-This is a worker for [SimpleBus](https://github.com/SimpleBus) or [FervoDeferredEventBundle][fervoSource]. It is
-written in Java. The purpose of this application is to pull messages from a message queue and initiate php to execute
-the job in that message.
+This Java application pull data from a message queue and give the message to PHP by using PHP-FPM. It could be used as a worker for [SimpleBus](https://github.com/SimpleBus) ascynchronous messages. 
 
 You will information about how this worker should work on the [Happr Developer blog](http://developer.happyr.com/real-asynchronous-events-with-symfony2)
 
 ## Installation
 
-Download the jar file and put it somewhere like /opt/DeferredEventJavaWorker/DeferredEventJavaWorker.jar. You might
-want to use a init script. See [this file][initFile] for a template.
-
-You do also need to install a message queue like [Rabbit MQ](http://www.rabbitmq.com/). When you got everything
-set up for the worker you need to install and configure [FervoDeferredEventBundle][fervoSource]. Use the **amqp backend.**
+Download the jar file and put it somewhere like /opt/mq2php/mq2php.jar. You might
+want to use a init script. See [this file][initFile] for a template. You do also need to install a message queue like [Rabbit MQ](http://www.rabbitmq.com/).
 
 Remember to protect your queue. If someone unauthorized could write to your queue he will get the same permission to execute
 programs as PHP does. Make sure you restrict access on the queue to localhost or make sure you know what you are doing.
@@ -121,5 +116,4 @@ mvn clean compile assembly:single
 java -Dexecutor=shell -DqueueNames=asynchronous_commands,asynchronous_events -jar target/mq2php-0.4.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-[fervoSource]: https://github.com/fervo/FervoDeferredEventBundle
-[initFile]: https://github.com/HappyR/DeferredEventJavaWorker/blob/master/deferred-event-java-worker.init-file
+[initFile]: https://github.com/Happyr/mq2php/blob/master/mq2php.init-file
