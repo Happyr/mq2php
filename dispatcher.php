@@ -11,8 +11,9 @@ if (isset($_SERVER['DEFERRED_DATA'])) {
 } elseif (isset($_POST['DEFERRED_DATA'])) {
     $data = $_POST['DEFERRED_DATA'];
 } elseif (isset($argv)) {
+    // if shell
     if (isset($argv[1])) {
-        $data = $argv[1];
+        $data = urldecode($argv[1]);
     }
 }
 
