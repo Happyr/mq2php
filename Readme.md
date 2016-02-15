@@ -21,7 +21,7 @@ There is some configuration you might want to consider when starting the worker.
 How do you want to execute the php job? Do you want to do it with PHP-FPM (fastcgi) or PHP cli (shell command).
 
 ```bash 
-java -Dexecutor=fastcgi -jar DeferredEventJavaWorker.jar
+java -Dexecutor=fastcgi -jar mq2php.jar
 ```
 
 Possible values are:
@@ -34,7 +34,7 @@ Possible values are:
 What message queue system do you want to use?
 
 ```bash 
-java -DmessageQueue=rabbitmq -jar DeferredEventJavaWorker.jar
+java -DmessageQueue=rabbitmq -jar mq2php.jar
 ```
 
 Possible values are:
@@ -48,7 +48,7 @@ When you are using rabbitmq we will connect to localhost with the official rabbi
 You can subscribe to different queues with different names. You should separate names by a comma.
 
 ```bash
-java -DmessageQueue=rabbitmq -DqueueNames=foo,bar,baz -jar DeferredEventJavaWorker.jar
+java -DmessageQueue=rabbitmq -DqueueNames=foo,bar,baz -jar mq2php.jar
 ```
 
 These topics will be evenly distributed over the worker threads.
@@ -60,7 +60,7 @@ you are planning to have several long running script simultaneously you may want
 to bother.
 
 ```bash 
-java -jar DeferredEventJavaWorker.jar 5
+java -jar mq2php.jar 5
 ```
 
 ## Message headers
