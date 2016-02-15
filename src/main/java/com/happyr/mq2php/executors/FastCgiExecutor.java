@@ -17,6 +17,9 @@ import java.nio.ByteBuffer;
  * @author Tobias Nyholm
  */
 public class FastCgiExecutor implements ExecutorInterface {
+
+    public static final int MAX_PAYLOAD = 65535;
+
     /**
      * @param message
      * @return
@@ -53,15 +56,20 @@ public class FastCgiExecutor implements ExecutorInterface {
 
         byte[] postData = ("DEFERRED_DATA=" + message.serialize()).getBytes();
 
-        //set contentLength, it's important
-        connection.setContentLength(postData.length);
-        connection.write(ByteBuffer.wrap(postData));
+        //set contentLength
+        int dataLength = postData.length;
+        connection.setContentLength(dataLength);
 
-        //print response headers
-        /*Map<String, String> responseHeaders = connection.getResponseHeaders();
-        for (String key : responseHeaders.keySet()) {
-            System.out.println("HTTP HEADER: " + key + "->" + responseHeaders.get(key));
-        }*/
+        /*
+         * Send data to the fcgi server.
+         */
+        int offset = 0;
+        while (offset + MAX_PAYLOAD < dataLength) {
+            connection.write(ByteBuffer.wrap(postData, offset, MAX_PAYLOAD));
+            offset += MAX_PAYLOAD;
+        }
+        connection.write(ByteBuffer.wrap(postData, offset, dataLength - offset));
+
 
         //read response data
         ByteBuffer buffer = ByteBuffer.allocate(10240);
