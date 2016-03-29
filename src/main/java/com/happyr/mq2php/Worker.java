@@ -22,26 +22,32 @@ public class Worker extends Thread {
 
     @Override
     public void run() {
-
-        String error;
-        Message message;
         while (true) {
-            message = mq.receive();
-            if (message == null) {
-                continue;
+            try {
+                listenToQueue();
+            } catch(Throwable t) {
+                System.err.println(t.getMessage());
             }
 
-            error = client.execute(message);
+        }
+    }
 
-            //if there was any error
-            if (error != null) {
-                //add timestamp
-                error = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + ": " + error;
+    private void listenToQueue() {
+        Message message = mq.receive();
+        if (message == null) {
+            return;
+        }
 
-                System.err.println(error);
-                message.addHeader("error", error);
-                mq.reportError(message.getFormattedMessage());
-            }
+        String error = client.execute(message);
+
+        //if there was any error
+        if (error != null) {
+            //add timestamp
+            error = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + ": " + error;
+
+            System.err.println(error);
+            message.addHeader("error", error);
+            mq.reportError(message.getFormattedMessage());
         }
     }
 }
