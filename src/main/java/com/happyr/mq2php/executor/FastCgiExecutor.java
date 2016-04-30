@@ -5,7 +5,6 @@ import com.happyr.mq2php.message.Message;
 import com.happyr.mq2php.util.Marshaller;
 import com.happyr.mq2php.util.PathResolver;
 import com.happyr.mq2php.util.Serializer;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,6 +20,12 @@ import java.nio.ByteBuffer;
 public class FastCgiExecutor implements ExecutorInterface {
 
     public static final int MAX_PAYLOAD = 65535;
+
+    private ByteBuffer buffer;
+
+    public FastCgiExecutor() {
+        buffer = ByteBuffer.allocateDirect(10240);
+    }
 
     /**
      * @param message
@@ -72,9 +77,7 @@ public class FastCgiExecutor implements ExecutorInterface {
         }
         connection.write(ByteBuffer.wrap(postData, offset, dataLength - offset));
 
-
         //read response data
-        ByteBuffer buffer = ByteBuffer.allocate(10240);
         connection.read(buffer);
         buffer.flip();
 
@@ -84,6 +87,7 @@ public class FastCgiExecutor implements ExecutorInterface {
         String response = new String(data);
         //close the connection
         connection.close();
+        buffer.clear();
 
         if (connection.hasOutputOnStdErr())
             return response;
