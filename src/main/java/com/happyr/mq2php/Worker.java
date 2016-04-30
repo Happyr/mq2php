@@ -4,6 +4,8 @@ import com.happyr.mq2php.executor.ExecutorInterface;
 import com.happyr.mq2php.message.Message;
 import com.happyr.mq2php.queue.QueueClient;
 import com.happyr.mq2php.util.Marshaller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 
@@ -13,6 +15,8 @@ import java.text.SimpleDateFormat;
  * @author Tobias Nyholm
  */
 public class Worker extends Thread {
+
+    private static final Logger logger = LoggerFactory.getLogger(Worker.class);
 
     private QueueClient mq;
     private ExecutorInterface client;
@@ -28,9 +32,8 @@ public class Worker extends Thread {
             try {
                 listenToQueue();
             } catch(Throwable t) {
-                System.err.println(t.getMessage());
+                logger.error(t.getMessage());
             }
-
         }
     }
 
@@ -47,7 +50,7 @@ public class Worker extends Thread {
             //add timestamp
             error = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + ": " + error;
 
-            System.err.println(error);
+            logger.error("Error while executing PHP script: {}", error);
             message.setHeader("error", error);
             mq.reportError(new String(Marshaller.toBytes(message)));
         }

@@ -15,7 +15,6 @@
 NAME="Message Queue to PHP"
 SCRIPT_NAME="/etc/init.d/mq2php"
 
-
 #
 # You may change these values to match your installation
 #
@@ -27,7 +26,7 @@ USER=java_user
 MESSAGE_QUEUE="rabbitmq"
 EXECUTOR="fastcgi" # could be "shell" or "fastcgi"
 
-LOG=/var/log/mq2php.log
+
 PIDFILE=/var/run/mq2php.pid
 #
 # stop changing
@@ -35,9 +34,6 @@ PIDFILE=/var/run/mq2php.pid
 
 #This is the command that will start the application
 COMMAND="-Dexecutor=$EXECUTOR -DmessageQueue=$MESSAGE_QUEUE -jar $PLUGIN_PATH/$FILE_NAME"
-touch $LOG
-chown $USER $LOG
-
 
 get_pid() {
   cat "$PIDFILE"
@@ -55,7 +51,7 @@ do_start() {
         echo "$NAME is already running"
       else
         echo "Starting $NAME"
-        start-stop-daemon -d $PLUGIN_PATH -c $USER --start -mp $PIDFILE -b --exec $JAVA_HOME -- $COMMAND 2>&1 $LOGFILE
+        start-stop-daemon -d $PLUGIN_PATH -c $USER --start -mp $PIDFILE -b --exec $JAVA_HOME -- $COMMAND
       fi
 }
 

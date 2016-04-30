@@ -1,6 +1,8 @@
 package com.happyr.mq2php.message;
 
 import com.happyr.mq2php.message.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -9,6 +11,8 @@ import java.util.ArrayList;
  */
 public class Message {
 
+    private static final Logger logger = LoggerFactory.getLogger(Message.class);
+
     private ArrayList<Header> headers;
     private String body;
 
@@ -16,6 +20,7 @@ public class Message {
         Header header = getHeaderByName(name);
 
         if (header == null) {
+            logger.error("Could not find header with name '{}'.", name);
             return null;
         }
 

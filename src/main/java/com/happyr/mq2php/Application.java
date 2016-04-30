@@ -5,6 +5,8 @@ import com.happyr.mq2php.executor.FastCgiExecutor;
 import com.happyr.mq2php.executor.ShellExecutor;
 import com.happyr.mq2php.queue.QueueClient;
 import com.happyr.mq2php.queue.RabbitMqClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Vector;
 
@@ -12,6 +14,8 @@ import java.util.Vector;
  * @author Tobias Nyholm
  */
 public class Application {
+
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         int nbThreads = 5;
@@ -28,6 +32,7 @@ public class Application {
             nbThreads = queueLength;
         }
 
+        logger.info("Starting mq2php with {} threads listening to {} queues.", nbThreads, queueLength);
         for (int i = 0; i < nbThreads; i++) {
             new Worker(queues.get(i % queueLength), client).start();
         }
