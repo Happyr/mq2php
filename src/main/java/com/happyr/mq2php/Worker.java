@@ -1,7 +1,9 @@
 package com.happyr.mq2php;
 
-import com.happyr.mq2php.executors.ExecutorInterface;
-import com.happyr.mq2php.queue.QueueInterface;
+import com.happyr.mq2php.executor.ExecutorInterface;
+import com.happyr.mq2php.message.Message;
+import com.happyr.mq2php.queue.QueueClient;
+import com.happyr.mq2php.util.Marshaller;
 
 import java.text.SimpleDateFormat;
 
@@ -12,10 +14,10 @@ import java.text.SimpleDateFormat;
  */
 public class Worker extends Thread {
 
-    private QueueInterface mq;
+    private QueueClient mq;
     private ExecutorInterface client;
 
-    public Worker(QueueInterface mq, ExecutorInterface client) {
+    public Worker(QueueClient mq, ExecutorInterface client) {
         this.mq = mq;
         this.client = client;
     }
@@ -46,8 +48,8 @@ public class Worker extends Thread {
             error = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + ": " + error;
 
             System.err.println(error);
-            message.addHeader("error", error);
-            mq.reportError(message.getFormattedMessage());
+            message.setHeader("error", error);
+            mq.reportError(new String(Marshaller.toBytes(message)));
         }
     }
 }

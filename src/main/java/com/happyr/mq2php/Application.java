@@ -1,10 +1,10 @@
 package com.happyr.mq2php;
 
-import com.happyr.mq2php.executors.ExecutorInterface;
-import com.happyr.mq2php.executors.FastCgiExecutor;
-import com.happyr.mq2php.executors.ShellExecutor;
-import com.happyr.mq2php.queue.QueueInterface;
-import com.happyr.mq2php.queue.RabbitMq;
+import com.happyr.mq2php.executor.ExecutorInterface;
+import com.happyr.mq2php.executor.FastCgiExecutor;
+import com.happyr.mq2php.executor.ShellExecutor;
+import com.happyr.mq2php.queue.QueueClient;
+import com.happyr.mq2php.queue.RabbitMqClient;
 
 import java.util.Vector;
 
@@ -19,7 +19,7 @@ public class Application {
             nbThreads = Integer.parseInt(args[0]);
         }
 
-        Vector<QueueInterface> queues = getQueues();
+        Vector<QueueClient> queues = getQueues();
         ExecutorInterface client = getExecutor();
         int queueLength = queues.size();
 
@@ -34,10 +34,11 @@ public class Application {
     }
 
     /**
+     * Return a Vector of queue client for each queue we should listen to.
      *
-     * @return Vector<QueueInterface>
+     * @return Vector<QueueClient>
      */
-    private static Vector<QueueInterface> getQueues() {
+    private static Vector<QueueClient> getQueues() {
         // This is a comma separated string
         String queueNamesArg = System.getProperty("queueNames");
         if (queueNamesArg == null) {
@@ -45,7 +46,7 @@ public class Application {
         }
         String[] queueNames = queueNamesArg.split(",");
 
-        Vector<QueueInterface> queues = new Vector<QueueInterface>();
+        Vector<QueueClient> queues = new Vector<QueueClient>();
         for (String name:queueNames) {
             queues.add(getQueue(name));
         }
@@ -53,11 +54,11 @@ public class Application {
     }
 
     /**
-     * Get a queue object from the system properties
+     * Get a queue client from the system properties.
      *
-     * @return QueueInterface
+     * @return QueueClient
      */
-    private static QueueInterface getQueue(String queueName) {
+    private static QueueClient getQueue(String queueName) {
         String param = System.getProperty("messageQueue");
         if (param == null) {
             //default
@@ -65,10 +66,10 @@ public class Application {
         }
 
         if (param.equalsIgnoreCase("rabbitmq")) {
-            return new RabbitMq(queueName);
+            return new RabbitMqClient(queueName);
         }
 
-        throw new IllegalArgumentException("Could not find QueueInterface implementation named " + param);
+        throw new IllegalArgumentException("Could not find QueueClient implementation named " + param);
     }
 
     /**

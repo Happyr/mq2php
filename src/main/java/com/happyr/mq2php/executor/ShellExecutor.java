@@ -1,7 +1,9 @@
-package com.happyr.mq2php.executors;
+package com.happyr.mq2php.executor;
 
-import com.happyr.mq2php.Message;
-import com.happyr.mq2php.PathResolver;
+import com.happyr.mq2php.message.Message;
+import com.happyr.mq2php.util.Marshaller;
+import com.happyr.mq2php.util.PathResolver;
+import com.happyr.mq2php.util.Serializer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,9 +24,9 @@ public class ShellExecutor implements ExecutorInterface {
 
         StringBuffer output = new StringBuffer();
 
-        String command = message.getHeader("php_bin") + " " +
-                PathResolver.resolve(message.getHeader("dispatch_path")) + " " +
-                message.serialize();
+        String command = message.getHeaderValueByName("php_bin") + " " +
+                PathResolver.resolve(message.getHeaderValueByName("dispatch_path")) + " " +
+                Serializer.serialize(Marshaller.toBytes(message));
 
         Process p;
         try {

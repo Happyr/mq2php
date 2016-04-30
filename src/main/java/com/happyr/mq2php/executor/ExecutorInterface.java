@@ -1,6 +1,6 @@
-package com.happyr.mq2php.executors;
+package com.happyr.mq2php.executor;
 
-import com.happyr.mq2php.Message;
+import com.happyr.mq2php.message.Message;
 
 /**
  * @author Tobias Nyholm

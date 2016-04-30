@@ -1,8 +1,10 @@
-package com.happyr.mq2php.executors;
+package com.happyr.mq2php.executor;
 
 import com.googlecode.fcgi4j.FCGIConnection;
-import com.happyr.mq2php.Message;
-import com.happyr.mq2php.PathResolver;
+import com.happyr.mq2php.message.Message;
+import com.happyr.mq2php.util.Marshaller;
+import com.happyr.mq2php.util.PathResolver;
+import com.happyr.mq2php.util.Serializer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,12 +51,12 @@ public class FastCgiExecutor implements ExecutorInterface {
 
         //create FastCGI connection
         FCGIConnection connection = FCGIConnection.open();
-        connection.connect(new InetSocketAddress(message.getHeader("fastcgi_host"), Integer.parseInt(message.getHeader("fastcgi_port"))));
+        connection.connect(new InetSocketAddress(message.getHeaderValueByName("fastcgi_host"), Integer.parseInt(message.getHeaderValueByName("fastcgi_port"))));
 
-        connection.beginRequest(PathResolver.resolve(message.getHeader("dispatch_path")));
+        connection.beginRequest(PathResolver.resolve(message.getHeaderValueByName("dispatch_path")));
         connection.setRequestMethod("POST");
 
-        byte[] postData = ("DEFERRED_DATA=" + message.serialize()).getBytes();
+        byte[] postData = ("DEFERRED_DATA=" + Serializer.serialize(Marshaller.toBytes(message))).getBytes();
 
         //set contentLength
         int dataLength = postData.length;

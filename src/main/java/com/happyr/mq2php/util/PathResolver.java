@@ -1,4 +1,4 @@
-package com.happyr.mq2php;
+package com.happyr.mq2php.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 /**
  * com.happyr.java.deferredEventWorker
  *
- * @autor Tobias Nyholm
+ * @author Tobias Nyholm
  */
 public class PathResolver {
 

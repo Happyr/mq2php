@@ -1,13 +1,12 @@
-package com.happyr.mq2php;
+package com.happyr.mq2php.util;
 
+import com.happyr.mq2php.util.PathResolver;
 import junit.framework.TestCase;
 
 /**
- * PACKAGE_NAME
  *
  * @author Tobias Nyholm
  */
-
 public class PathResolverTest extends TestCase {
 
     public void testResolve() {

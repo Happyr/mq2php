@@ -1,6 +1,7 @@
 package com.happyr.mq2php.queue;
 
-import com.happyr.mq2php.Message;
+import com.happyr.mq2php.message.Message;
+import com.happyr.mq2php.util.Marshaller;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeoutException;
  *
  * @author Tobias Nyholm
  */
-public class RabbitMq implements QueueInterface {
+public class RabbitMqClient implements QueueClient {
 
     protected Connection connection;
     protected Channel channel;
@@ -22,7 +23,7 @@ public class RabbitMq implements QueueInterface {
     protected String queueName;
     protected String errorQueueName;
 
-    public RabbitMq(String queueName) {
+    public RabbitMqClient(String queueName) {
         this.queueName = queueName;
         errorQueueName = queueName + "_errors";
         ConnectionFactory factory = new ConnectionFactory();
@@ -54,12 +55,12 @@ public class RabbitMq implements QueueInterface {
         Message message;
         try {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-            message = new Message(new String(delivery.getBody()));
+            message = Marshaller.valueOf(delivery.getBody(), Message.class);
         } catch (InterruptedException e) {
             return null;
         }
 
-        message.addHeader("queue_name", queueName);
+        message.setHeader("queue_name", queueName);
         return message;
     }
 
