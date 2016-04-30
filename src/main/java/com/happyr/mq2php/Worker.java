@@ -47,11 +47,11 @@ public class Worker extends Thread {
 
         //if there was any error
         if (error != null) {
-            //add timestamp
-            error = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) + ": " + error;
-
             logger.error("Error while executing PHP script: {}", error);
+
+            message.setHeader("error_date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()));
             message.setHeader("error", error);
+
             mq.reportError(new String(Marshaller.toBytes(message)));
         }
     }
