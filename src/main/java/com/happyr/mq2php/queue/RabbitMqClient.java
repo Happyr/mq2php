@@ -35,7 +35,7 @@ public class RabbitMqClient implements QueueClient {
             channel.queueDeclare(queueName, true, false, false, null);
 
             consumer = new QueueingConsumer(channel);
-            channel.basicConsume(queueName, true, consumer);
+            channel.basicConsume(queueName, false, consumer);
         } catch (TimeoutException e) {
             throw new RuntimeException(e.getMessage());
         } catch (IOException e) {
@@ -56,8 +56,11 @@ public class RabbitMqClient implements QueueClient {
         try {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             message = Marshaller.valueOf(delivery.getBody(), Message.class);
+            consumer.getChannel().basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         } catch (InterruptedException e) {
             return null;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
 
         message.setHeader("queue_name", queueName);
