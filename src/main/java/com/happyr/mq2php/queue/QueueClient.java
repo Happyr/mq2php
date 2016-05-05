@@ -7,9 +7,7 @@ package com.happyr.mq2php.queue;
  */
 public interface QueueClient {
     /**
-     * Start receiving messages
-     *
-     * @return Message
+     * Start receiving messages. This will make use of the message consumer.
      */
     void receive();
 }

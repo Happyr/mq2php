@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 
 /**
- * Message
+ * A representation of a message
  */
 public class Message {
 

@@ -1,5 +1,8 @@
 package com.happyr.mq2php.message;
 
+/**
+ * A representation of a message header.
+ */
 public class Header {
 
     private String key;

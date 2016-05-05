@@ -4,7 +4,7 @@ import com.happyr.mq2php.message.Message;
 import com.happyr.mq2php.util.Marshaller;
 
 /**
- * Created by tobias on 2016-05-05.
+ * An exception that is thrown by the executors if something unexpected happened.
  */
 public class MessageExecutionFailedException extends RuntimeException {
     private String error;

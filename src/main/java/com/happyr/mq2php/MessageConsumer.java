@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 
 /**
- *
+ * Consume messages, ie give them to the executor and handle errors.
  */
 public class MessageConsumer {
 
@@ -21,7 +21,8 @@ public class MessageConsumer {
         this.client = client;
     }
 
-    public void handle(Message message) {
+    public void handle(Message message)
+            throws MessageExecutionFailedException {
         String error = client.execute(message);
 
         //if there was any error

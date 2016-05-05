@@ -4,13 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
- *
+ * Serialize a message so it can be put on the queue.
  */
 public class Serializer {
     /**
-     * Return a serialized version of this message
-     *
-     * @return
+     * Return a serialized version of this message.
      */
     public static String serialize(byte[] bytes) {
         try {

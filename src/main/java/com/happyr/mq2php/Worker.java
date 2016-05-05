@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * com.happyr.java.deferredEventWorker
+ *
  *
  * @author Tobias Nyholm
  */
