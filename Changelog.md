@@ -1,5 +1,11 @@
 # Changelog
 
+## From 0.3.1 to 0.4.0
+
+* Fixed memory leaks
+* New message syntax, we do not longer use HTTP-like messages. We use a Json syntax instead.
+* We do no longer accept any arguments when running the application. We only use system properties.
+
 ## From 0.3.0 to 0.3.1
 
 * The data dispached will be Base64 **and** URL encoded. This will fix the bug where PHP interpets a Base64 endcoded string as two strings becuase it contains a plus sign (+). 

@@ -2,6 +2,7 @@
 
 set_time_limit(0);
 
+
 /*
  * Look both in $_SERVER, $_POST and $argv after some data.
  */
@@ -22,19 +23,10 @@ if ($data === null) {
     exit(1);
 }
 
-
-$message = base64_decode($data);
-$headers = array();
-$body = null;
-$lines = explode("\n", $message);
-foreach ($lines as $i=>$line) {
-    if ($line == '') {
-        $body = $lines[$i+1];
-        break;
-    }
-    list($name, $value) = explode(':', $line, 2);
-    $headers[$name]= trim($value);
-}
+// Decode the message and get the data
+$message = json_decode($data, true);
+$headers = $message['headers'];
+$body = $message['body'];
 
 //$headers is an array with headers
 //$body is the content of the message
