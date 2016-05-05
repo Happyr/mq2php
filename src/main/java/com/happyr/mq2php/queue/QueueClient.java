@@ -9,17 +9,9 @@ import com.happyr.mq2php.message.Message;
  */
 public interface QueueClient {
     /**
-     * Get a message from the queue. This should be blocking
+     * Start receiving messages
      *
      * @return Message
      */
-    Message receive();
-
-    /**
-     * Report an error. Add a message to an error queue/topic
-     *
-     * @param message
-     * @return boolean
-     */
-    boolean reportError(String message);
+    void receive();
 }

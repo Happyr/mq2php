@@ -19,40 +19,26 @@ public class Worker extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(Worker.class);
 
     private QueueClient mq;
-    private ExecutorInterface client;
+    private String queueName;
 
-    public Worker(QueueClient mq, ExecutorInterface client) {
+    public Worker(String queueName, QueueClient mq) {
+        this.queueName = queueName;
         this.mq = mq;
-        this.client = client;
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                listenToQueue();
+                mq.receive();
             } catch(Throwable t) {
                 logger.error(t.getMessage());
+                return;
             }
         }
     }
 
-    private void listenToQueue() {
-        Message message = mq.receive();
-        if (message == null) {
-            return;
-        }
-
-        String error = client.execute(message);
-
-        //if there was any error
-        if (error != null) {
-            logger.error("Error while executing PHP script: {}", error);
-
-            message.setHeader("error_date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()));
-            message.setHeader("error", error);
-
-            mq.reportError(new String(Marshaller.toBytes(message)));
-        }
+    public String getQueueName() {
+        return queueName;
     }
 }

@@ -8,6 +8,7 @@ import com.happyr.mq2php.queue.RabbitMqClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -16,48 +17,100 @@ import java.util.Vector;
 public class Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
+    private static ArrayList<Worker> workers = new ArrayList<Worker>();
 
     public static void main(String[] args) {
-        int nbThreads = 5;
-        if (args.length > 0) {
-            nbThreads = Integer.parseInt(args[0]);
+        int nbThreads = getNumberOfThreads();
+        String[] queueNames = getQueueNames();
+
+        logger.info("Starting mq2php listening to {} queues.", queueNames.length);
+
+        // Start all queue
+        for (int i = 0; i < queueNames.length; i++) {
+            for (int j = 0; j < nbThreads; j++) {
+                String name = queueNames[i];
+                startNewWorker(name);
+            }
         }
 
-        Vector<QueueClient> queues = getQueues();
-        ExecutorInterface client = getExecutor();
-        int queueLength = queues.size();
+        // Start monitor their health
+        checkWorkerHealth();
+    }
 
-        // Make sure we have at least as many threads as queues.
-        if (nbThreads < queueLength) {
-            nbThreads = queueLength;
-        }
+    /**
+     * Check the heath of each worker periodically.
+     */
+    private static void checkWorkerHealth() {
+        Worker worker;
+        String queueName;
+        while (true) {
+            for(int i = 0; i<workers.size(); i++) {
+                worker = workers.get(i);
+                if (!worker.isAlive()) {
+                    queueName = worker.getQueueName();
+                    workers.remove(worker);
+                    startNewWorker(queueName);
+                }
+            }
 
-        logger.info("Starting mq2php with {} threads listening to {} queues.", nbThreads, queueLength);
-        for (int i = 0; i < nbThreads; i++) {
-            new Worker(queues.get(i % queueLength), client).start();
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {}
         }
     }
 
     /**
-     * Return a Vector of queue client for each queue we should listen to.
-     *
-     * @return Vector<QueueClient>
+     * Start a new worker and put it to the worker queue
+     * @param name of the queue that we should listen to
      */
-    private static Vector<QueueClient> getQueues() {
+    private static void startNewWorker(String name) {
+        logger.info("Starting worker for queue '{}'", name);
+        Worker worker = new Worker(name, getQueue(name));
+        worker.start();
+        workers.add(worker);
+    }
+
+    /**
+     * Get the queue names
+     *
+     * @return String[]
+     */
+    private static String[] getQueueNames(){
         // This is a comma separated string
         String queueNamesArg = System.getProperty("queueNames");
         if (queueNamesArg == null) {
             queueNamesArg = "sf_deferred_events";
         }
-        String[] queueNames = queueNamesArg.split(",");
 
-        Vector<QueueClient> queues = new Vector<QueueClient>();
-        for (String name:queueNames) {
-            queues.add(getQueue(name));
-        }
-        return queues;
+        return queueNamesArg.split(",");
     }
 
+    /**
+     * Get the number of threads from System properties.
+     *
+     * @return int
+     */
+    private static int getNumberOfThreads() {
+        String param = System.getProperty("threads");
+        if (param == null) {
+            //default
+            param = "3";
+        }
+
+        int threads;
+        try {
+            threads = Integer.parseInt(param);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("The number of threads must me an integer");
+
+        }
+
+        if (threads<1) {
+            throw new IllegalArgumentException("You must specify a number of threads that is greather than 0");
+        }
+
+        return threads;
+    }
     /**
      * Get a queue client from the system properties.
      *
@@ -71,7 +124,7 @@ public class Application {
         }
 
         if (param.equalsIgnoreCase("rabbitmq")) {
-            return new RabbitMqClient(queueName);
+            return new RabbitMqClient(queueName, new MessageConsumer(getExecutor()));
         }
 
         throw new IllegalArgumentException("Could not find QueueClient implementation named " + param);

@@ -1,5 +1,7 @@
 package com.happyr.mq2php.queue;
 
+import com.happyr.mq2php.MessageConsumer;
+import com.happyr.mq2php.exception.MessageExecutionFailedException;
 import com.happyr.mq2php.message.Message;
 import com.happyr.mq2php.util.Marshaller;
 import com.rabbitmq.client.Channel;
@@ -8,6 +10,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -22,8 +25,10 @@ public class RabbitMqClient implements QueueClient {
     protected QueueingConsumer consumer;
     protected String queueName;
     protected String errorQueueName;
+    protected MessageConsumer messageConsumer;
 
-    public RabbitMqClient(String queueName) {
+    public RabbitMqClient(String queueName, MessageConsumer mc) {
+        messageConsumer = mc;
         this.queueName = queueName;
         errorQueueName = queueName + "_errors";
         ConnectionFactory factory = new ConnectionFactory();
@@ -51,23 +56,35 @@ public class RabbitMqClient implements QueueClient {
         super.finalize();
     }
 
-    public Message receive() {
-        Message message;
+    public void receive() {
+        QueueingConsumer.Delivery delivery;
         try {
-            QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-            message = Marshaller.valueOf(delivery.getBody(), Message.class);
+            delivery = consumer.nextDelivery();
+        }catch (InterruptedException e) {
+            return;
+        }
+
+        // De-cypher the message
+        Message message = Marshaller.valueOf(delivery.getBody(), Message.class);
+        message.setHeader("queue_name", queueName);
+
+        try {
+            // Handle the message
+            messageConsumer.handle(message);
+        } catch (MessageExecutionFailedException e) {
+            reportError(e.getMessage());
+        }
+
+        try {
+            // Ack the message when it has been handled
             consumer.getChannel().basicAck(delivery.getEnvelope().getDeliveryTag(), false);
-        } catch (InterruptedException e) {
-            return null;
+
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-
-        message.setHeader("queue_name", queueName);
-        return message;
     }
 
-    public boolean reportError(String message) {
+    private boolean reportError(String message) {
 
         try {
             channel.queueDeclare(errorQueueName, false, false, false, null);
