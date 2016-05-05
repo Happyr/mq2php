@@ -54,7 +54,8 @@ public class Application {
             }
 
             try {
-                Thread.sleep(10000);
+                // Sleep for a minute
+                Thread.sleep(60000);
             } catch (InterruptedException e) {}
         }
     }
