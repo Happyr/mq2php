@@ -5,6 +5,7 @@
 * Fixed memory leaks
 * New message syntax, we do not longer use HTTP-like messages. We use a Json syntax instead.
 * We do no longer accept any arguments when running the application. We only use system properties.
+* Added logging to a log file.
 
 ## From 0.3.0 to 0.3.1
 
