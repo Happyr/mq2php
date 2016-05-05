@@ -21,8 +21,7 @@ public class MessageConsumer {
         this.client = client;
     }
 
-    public void handle(Message message)
-    {
+    public void handle(Message message) {
         String error = client.execute(message);
 
         //if there was any error

@@ -1,13 +1,8 @@
 package com.happyr.mq2php;
 
-import com.happyr.mq2php.executor.ExecutorInterface;
-import com.happyr.mq2php.message.Message;
 import com.happyr.mq2php.queue.QueueClient;
-import com.happyr.mq2php.util.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.text.SimpleDateFormat;
 
 /**
  * com.happyr.java.deferredEventWorker
@@ -31,7 +26,7 @@ public class Worker extends Thread {
         while (true) {
             try {
                 mq.receive();
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 logger.error(t.getMessage());
                 return;
             }

@@ -1,6 +1,5 @@
 package com.happyr.mq2php.message;
 
-import com.happyr.mq2php.message.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,7 @@ public class Message {
     }
 
     public Header getHeaderByName(String name) {
-        for(Header header: headers) {
+        for (Header header : headers) {
             if (header.getKey().equals(name)) {
                 return header;
             }

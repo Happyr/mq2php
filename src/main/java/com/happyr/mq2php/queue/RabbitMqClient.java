@@ -10,7 +10,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 import java.io.IOException;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -60,7 +59,7 @@ public class RabbitMqClient implements QueueClient {
         QueueingConsumer.Delivery delivery;
         try {
             delivery = consumer.nextDelivery();
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             return;
         }
 

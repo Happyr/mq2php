@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * @author Tobias Nyholm
@@ -44,7 +43,7 @@ public class Application {
         Worker worker;
         String queueName;
         while (true) {
-            for(int i = 0; i<workers.size(); i++) {
+            for (int i = 0; i < workers.size(); i++) {
                 worker = workers.get(i);
                 if (!worker.isAlive()) {
                     queueName = worker.getQueueName();
@@ -56,12 +55,14 @@ public class Application {
             try {
                 // Sleep for a minute
                 Thread.sleep(60000);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
     }
 
     /**
      * Start a new worker and put it to the worker queue
+     *
      * @param name of the queue that we should listen to
      */
     private static void startNewWorker(String name) {
@@ -76,7 +77,7 @@ public class Application {
      *
      * @return String[]
      */
-    private static String[] getQueueNames(){
+    private static String[] getQueueNames() {
         // This is a comma separated string
         String queueNamesArg = System.getProperty("queueNames");
         if (queueNamesArg == null) {
@@ -106,12 +107,13 @@ public class Application {
 
         }
 
-        if (threads<1) {
+        if (threads < 1) {
             throw new IllegalArgumentException("You must specify a number of threads that is greather than 0");
         }
 
         return threads;
     }
+
     /**
      * Get a queue client from the system properties.
      *
