@@ -1,5 +1,8 @@
 # Changelog
 
+## From 0.4.0 to master
+
+
 ## From 0.3.1 to 0.4.0
 
 * Fixed memory leaks
