@@ -120,7 +120,7 @@ These headers must exist when you are using the HTTP executor.
 
 ## Contribute
 
-If you want to make changed and compile the application your self you can do so with:
+If you want to make a change and compile the application your self you can do so with:
 
 ```bash
 mvn clean compile assembly:single
