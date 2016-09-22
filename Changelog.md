@@ -1,7 +1,10 @@
 # Changelog
 
-## From 0.4.0 to master
+## From 0.5.0 to master
 
+## From 0.4.0 to 0.5.0
+
+* Added HTTP executor
 
 ## From 0.3.1 to 0.4.0
 
