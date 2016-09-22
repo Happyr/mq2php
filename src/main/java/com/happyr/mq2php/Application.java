@@ -2,6 +2,7 @@ package com.happyr.mq2php;
 
 import com.happyr.mq2php.executor.ExecutorInterface;
 import com.happyr.mq2php.executor.FastCgiExecutor;
+import com.happyr.mq2php.executor.HttpExecutor;
 import com.happyr.mq2php.executor.ShellExecutor;
 import com.happyr.mq2php.queue.QueueClient;
 import com.happyr.mq2php.queue.RabbitMqClient;
@@ -151,6 +152,10 @@ public class Application {
 
         if (param.equalsIgnoreCase("shell")) {
             return new ShellExecutor();
+        }
+
+        if (param.equalsIgnoreCase("http")) {
+            return new HttpExecutor();
         }
 
         throw new IllegalArgumentException("Could not find ExecutorInterface implementation named " + param);
