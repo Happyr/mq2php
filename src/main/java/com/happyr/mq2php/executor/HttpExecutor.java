@@ -3,14 +3,17 @@ package com.happyr.mq2php.executor;
 import com.happyr.mq2php.message.Header;
 import com.happyr.mq2php.message.Message;
 import com.happyr.mq2php.util.Marshaller;
-import com.happyr.mq2php.util.Serializer;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Execute a message by HTTP POST request.
@@ -25,7 +28,7 @@ public class HttpExecutor implements ExecutorInterface {
         }
 
         try {
-            return sendHttpPost(headerUrl, Serializer.serialize(Marshaller.toBytes(message)));
+            return sendHttpPost(headerUrl, new String(Marshaller.toBytes(message)));
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -35,14 +38,15 @@ public class HttpExecutor implements ExecutorInterface {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost(headerUrl.getValue());
-            httpPost.addHeader("Content-Type", "application/json");
-            httpPost.setEntity(new StringEntity(body));
+
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            nvps.add(new BasicNameValuePair("DEFERRED_DATA", body));
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+
             CloseableHttpResponse response = httpclient.execute(httpPost);
 
             try {
-                System.out.println(response.getStatusLine());
                 int httpStatus = response.getStatusLine().getStatusCode();
-
                 if (httpStatus != 200) {
                     return response.toString();
                 }
