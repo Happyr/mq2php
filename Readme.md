@@ -54,7 +54,7 @@ These queues will be evenly distributed over the worker threads.
 
 ### threads
 
-The number of threads you want to use for each queue. As default there ara 3 threads listening to each queue. These
+The number of threads you want to use for each queue. As default there are 3 threads listening to each queue. These
 threads are waiting for a response from the PHP script. If you are planning to have several long running script
 simultaneously you may want to increase this. Usually you don't need to bother.
 
