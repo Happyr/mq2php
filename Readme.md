@@ -1,5 +1,10 @@
 # Message queue 2 PHP
 
+[![Latest Version](https://img.shields.io/github/release/Happyr/mq2php.svg?style=flat-square)](https://github.com/Happyr/mq2php/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Build Status](https://img.shields.io/travis/Happyr/mq2php.svg?style=flat-square)](https://travis-ci.org/Happyr/mq2php)
+
+
 This Java application pull data from a message queue and give the message to PHP by using PHP-FPM. It could be used as a worker for [SimpleBus](https://github.com/SimpleBus) asynchronous messages.
 
 ## Installation
