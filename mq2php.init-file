@@ -24,7 +24,7 @@ FILE_NAME=mq2php.jar
 USER=java_user
 
 MESSAGE_QUEUE="rabbitmq"
-EXECUTOR="fastcgi" # could be "shell" or "fastcgi"
+EXECUTOR="fastcgi" # could be "fastcgi", "http" or "shell"
 
 
 PIDFILE=/var/run/mq2php.pid
