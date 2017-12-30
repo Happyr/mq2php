@@ -37,6 +37,7 @@ public class RabbitMqClient implements QueueClient {
             channel = connection.createChannel();
 
             channel.queueDeclare(queueName, true, false, false, null);
+            channel.basicQos(1);
 
             consumer = new QueueingConsumer(channel);
             channel.basicConsume(queueName, false, consumer);
