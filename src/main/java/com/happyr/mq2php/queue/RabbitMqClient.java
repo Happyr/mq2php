@@ -87,7 +87,7 @@ public class RabbitMqClient implements QueueClient {
     private boolean reportError(String message) {
 
         try {
-            channel.queueDeclare(errorQueueName, false, false, false, null);
+            channel.queueDeclare(errorQueueName, true, false, false, null);
             channel.basicPublish("", errorQueueName, null, message.getBytes());
         } catch (IOException e) {
             return false;
