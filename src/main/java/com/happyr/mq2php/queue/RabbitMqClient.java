@@ -26,12 +26,13 @@ public class RabbitMqClient implements QueueClient {
     protected String errorQueueName;
     protected MessageConsumer messageConsumer;
 
-    public RabbitMqClient(String queueName, MessageConsumer mc) {
+    public RabbitMqClient(String host, Integer port, String queueName, MessageConsumer mc) {
         messageConsumer = mc;
         this.queueName = queueName;
         errorQueueName = queueName + "_errors";
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost(host);
+        factory.setPort(port);
         try {
             connection = factory.newConnection();
             channel = connection.createChannel();

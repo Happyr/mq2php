@@ -47,6 +47,9 @@ Possible values are:
 
 When you are using rabbitmq we will connect to localhost with the official rabbit mq client library.
 
+If you run rabbitmq on a different host than ``localhost`` you can use ``-DmessageQueueHost=otherhost`` and
+``-DmessageQueuePort=1234`` to modify host and port.
+
 ### queueNames
 
 You can subscribe to different queues with different names. You should separate names by a comma.
