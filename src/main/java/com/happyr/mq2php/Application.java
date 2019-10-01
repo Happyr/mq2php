@@ -127,8 +127,28 @@ public class Application {
             param = "rabbitmq";
         }
 
+        String host = System.getProperty("messageQueueHost");
+        if (host == null) {
+            //default
+            host = "localhost";
+        }
+
+        String portString = System.getProperty("messageQueuePort");
+        Integer port;
+        try {
+            port = Integer.parseInt(portString);
+        }
+        catch (NumberFormatException e) {
+            port = null;
+        }
+
         if (param.equalsIgnoreCase("rabbitmq")) {
-            return new RabbitMqClient(queueName, new MessageConsumer(getExecutor()));
+            if (port == null) {
+                //default for rabbitmq
+                port = 5672;
+            }
+            logger.info("Using rabbitmq at {}:{}", host, port);
+            return new RabbitMqClient(host, port, queueName, new MessageConsumer(getExecutor()));
         }
 
         throw new IllegalArgumentException("Could not find QueueClient implementation named " + param);
